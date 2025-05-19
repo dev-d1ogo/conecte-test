@@ -1,0 +1,56 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  DOCTOR
+  PATIENT
+}
+
+model User {
+  id                 String          @id @default(uuid())
+  name               String
+  email              String          @unique
+  password           String
+  role               Role
+  slots              AvailableSlot[] @relation("UserSlots")
+  schedulesAsDoctor  Scheduling[]    @relation("DoctorSchedules")
+  schedulesAsPatient Scheduling[]    @relation("PatientSchedules")
+  createdAt          DateTime        @default(now())
+  updatedAt          DateTime        @updatedAt
+
+  @@map("users")
+}
+
+model AvailableSlot {
+  id         String       @id @default(uuid())
+  doctor     User         @relation("UserSlots", fields: [doctorId], references: [id])
+  doctorId   String
+  dateTime   DateTime
+  createdAt  DateTime     @default(now())
+  Scheduling Scheduling[]
+  isBooked   Boolean      @default(false)
+
+  @@map("slots")
+}
+
+model Scheduling {
+  id        String @id @default(uuid())
+  doctor    User   @relation("DoctorSchedules", fields: [doctorId], references: [id])
+  doctorId  String
+  patient   User   @relation("PatientSchedules", fields: [patientId], references: [id])
+  patientId String
+
+  slot     AvailableSlot @relation(fields: [slotId], references: [id], onDelete: Cascade)
+  slotId   String
+  dateTime DateTime
+
+  createdAt DateTime @default(now())
+
+  @@map("schedulings")
+}

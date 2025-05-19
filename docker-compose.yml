@@ -1,0 +1,48 @@
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: conecte_postgres
+    restart: always
+    env_file:
+      - ./conecte-api/.env
+    ports:
+      - "5435:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - conecte_net
+
+  backend:
+    build:
+      context: ./conecte-api
+    container_name: conecte_api
+    env_file:
+      - ./conecte-api/.env
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+    networks:
+      - conecte_net
+
+  frontend:
+    environment:
+      - PORT=3001
+    build:
+      context: ./conecte-web
+    container_name: conecte_web
+    env_file:
+      - ./conecte-web/.env
+    ports:
+      - "3001:3001"
+    depends_on:
+      - backend
+    networks:
+      - conecte_net
+
+volumes:
+  postgres_data:
+
+networks:
+  conecte_net:
