@@ -7,7 +7,7 @@ import { ApplicationError, ValidationError, ValidationErrorDescription } from ".
  */
 
 export class RequestValidator {
-    static validate<T>(data: unknown, schema: Zod.ZodSchema<T>): T {
+    static validate<T>(data: unknown, schema: z.ZodSchema<T>): T {
         try {
             return schema.parse(data);
         } catch (error) {
