@@ -1,3 +1,5 @@
+---
+
 # 🩺 Conecte Saúde
 
 **Conecte** é uma plataforma de agendamento médico entre pacientes e médicos, com autenticação, gerenciamento de horários em tempo real via WebSocket. Algumas funcionalidades estão mockadas, porém nenhuma que atrapalhe o fluxo principal de agendamento.
@@ -45,41 +47,55 @@ docker-compose up -d
 
 A aplicação será acessível em:
 
-- Frontend: http://localhost:3001
-- Backend: http://localhost:3000
+- Frontend: [http://localhost:3001](http://localhost:3001)
+- Backend: [http://localhost:3000](http://localhost:3000)
 - PostgreSQL: na porta 5435 do host
 
 > ⚠️ O CORS da API está liberado **apenas para `http://localhost:3001`**, certifique-se de rodar o frontend nessa porta.
+
+📌 **O seed será executado automaticamente** após a aplicação subir pela primeira vez, criando:
+
+- 1 médico (`doutor@exemplo.com` / `123456`)
+- 2 pacientes (`paciente1@exemplo.com`, `paciente2@exemplo.com` / `123456`)
+- Horários disponíveis para o médico
+- 2 agendamentos preenchidos
 
 ---
 
 ### 2. Rodando manualmente (sem Docker Compose completo)
 
-1. **Subir apenas o banco de dados:**
+#### 1. Subir apenas o banco de dados:
 
 ```bash
 docker compose up postgres
 ```
 
-2. **Rodar o backend:**
+#### 2. Rodar o backend:
 
-   - Ajuste `DATABASE_URL` para usar `localhost`:
+- Ajuste `DATABASE_URL` para usar `localhost`:
 
-   ```env
-   DATABASE_URL="postgresql://postgres:postgres@localhost:5435/conecte_db"
-   ```
+```env
+DATABASE_URL="postgresql://postgres:postgres@localhost:5435/conecte_db"
+```
 
-   - Execute:
+- Execute:
 
-   ```bash
-   cd conecte-api
-   npm install
-   npx prisma generate
-   npx prisma migrate deploy
-   npm run start:dev
-   ```
+```bash
+cd conecte-api
+npm install
+npx prisma generate
+npx prisma migrate deploy
+npm run start:dev
+```
 
-3. **Rodar o frontend:**
+#### 3. (Opcional) Executar seed manualmente:
+
+```bash
+cd conecte-api
+npx ts-node prisma/seed.ts
+```
+
+#### 4. Rodar o frontend:
 
 ```bash
 cd conecte-web
@@ -114,24 +130,22 @@ A aplicação web em Next.js foi estruturada com base no padrão **Presentation 
 - **Controller**: responsáveis por orquestrar o estado e lógica de tela (`SlotsController`, `AppointmentsController`)
 - **API Service**: camada de infraestrutura que lida com requisições HTTP (`api-service.ts`)
 
-Esse padrão é inspirado em abordagens como **Model-View-Presenter (MVP)** e **Container + Presentational Components**, promovendo clareza, testabilidade e escalabilidade na UI.
-
 ---
 
 ### Backend – **Clean Architecture + Hexagonal Architecture + DDD**
 
 A API em NestJS foi desenvolvida seguindo os princípios da:
 
-- **Clean Architecture**: separação entre camadas de domínio, aplicação e infraestrutura
-- **Hexagonal Architecture (Ports & Adapters)**: adaptadores externos como banco de dados, autenticação, e sockets via interfaces
-- **DDD – Domain-Driven Design**: modelagem explícita dos conceitos de domínio como `User`, `AvailableSlot`, `Scheduling`, respeitando regras de negócio
+- **Clean Architecture**
+- **Hexagonal Architecture (Ports & Adapters)**
+- **DDD – Domain-Driven Design**
 
-Além disso, foram utilizados padrões e práticas como:
+Com práticas como:
 
-- **DTOs + validações com `zod`**
-- **Application Services** para lógica orquestradora
-- **Repositorios baseados em interfaces**
-- **Tratamento centralizado de erros personalizados**
+- DTOs + validações com `zod`
+- Application Services para lógica orquestradora
+- Repositórios baseados em interfaces
+- Tratamento centralizado de erros personalizados
 
 ---
 
