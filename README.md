@@ -1,10 +1,10 @@
-# 🩺 Conecte
+# 🩺 Conecte Saúde
 
 **Conecte** é uma plataforma de agendamento médico entre pacientes e médicos, com autenticação, gerenciamento de horários em tempo real via WebSocket. Algumas funcionalidades estão mockadas, porém nenhuma que atrapalhe o fluxo principal de agendamento.
 
 ---
 
-## ⚙️ Variáveis de Ambiente
+## Variáveis de Ambiente
 
 ### Backend (`conecte-api/.env`)
 
@@ -45,15 +45,15 @@ docker-compose up -d
 
 A aplicação será acessível em:
 
-- 🖥️ Frontend: http://localhost:3001
-- 🛠️ Backend: http://localhost:3000
-- 🗄️ PostgreSQL: na porta 5435 do host
+- Frontend: http://localhost:3001
+- Backend: http://localhost:3000
+- PostgreSQL: na porta 5435 do host
 
 > ⚠️ O CORS da API está liberado **apenas para `http://localhost:3001`**, certifique-se de rodar o frontend nessa porta.
 
 ---
 
-### 🧪 2. Rodando manualmente (sem Docker Compose completo)
+### 2. Rodando manualmente (sem Docker Compose completo)
 
 1. **Subir apenas o banco de dados:**
 
@@ -89,7 +89,7 @@ pnpm run dev -- --port 3001
 
 ---
 
-## 🔄 WebSocket: Agendamentos em tempo real
+## WebSocket: Agendamentos em tempo real
 
 - A API emite eventos via WebSocket ao criar um novo agendamento (`scheduling:created`)
 - O frontend escuta esses eventos e atualiza os dados automaticamente.
@@ -104,9 +104,9 @@ socket.on("scheduling:created", (data) => {
 
 ---
 
-## 🧱 Arquitetura do Projeto
+## Arquitetura do Projeto
 
-### 🖥️ Frontend – **Presentation Controller Pattern**
+### Frontend – **Presentation Controller Pattern**
 
 A aplicação web em Next.js foi estruturada com base no padrão **Presentation Controller Pattern**, com separação clara entre:
 
@@ -118,13 +118,13 @@ Esse padrão é inspirado em abordagens como **Model-View-Presenter (MVP)** e **
 
 ---
 
-### 🔧 Backend – **Clean Architecture + Hexagonal Architecture + DDD**
+### Backend – **Clean Architecture + Hexagonal Architecture + DDD**
 
 A API em NestJS foi desenvolvida seguindo os princípios da:
 
-- ✅ **Clean Architecture**: separação entre camadas de domínio, aplicação e infraestrutura
-- 🧩 **Hexagonal Architecture (Ports & Adapters)**: adaptadores externos como banco de dados, autenticação, e sockets via interfaces
-- 🧠 **DDD – Domain-Driven Design**: modelagem explícita dos conceitos de domínio como `User`, `AvailableSlot`, `Scheduling`, respeitando regras de negócio
+- **Clean Architecture**: separação entre camadas de domínio, aplicação e infraestrutura
+- **Hexagonal Architecture (Ports & Adapters)**: adaptadores externos como banco de dados, autenticação, e sockets via interfaces
+- **DDD – Domain-Driven Design**: modelagem explícita dos conceitos de domínio como `User`, `AvailableSlot`, `Scheduling`, respeitando regras de negócio
 
 Além disso, foram utilizados padrões e práticas como:
 
@@ -179,14 +179,10 @@ volumes:
 
 ---
 
-## ✅ Requisitos
+## Requisitos
 
 - Docker + Docker Compose
 - Node.js >= 18 (caso rode localmente)
 - NPM ou PNPM
 
 ---
-
-## 📄 Licença
-
-Este projeto está sob a licença MIT.
