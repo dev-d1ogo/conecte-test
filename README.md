@@ -1,5 +1,4 @@
 ---
-
 # 🩺 Conecte Saúde
 **Conecte** é uma plataforma de agendamento médico entre pacientes e médicos, com autenticação, gerenciamento de horários em tempo real via WebSocket. Algumas funcionalidades estão mockadas, porém nenhuma que atrapalhe o fluxo principal de agendamento.
 
